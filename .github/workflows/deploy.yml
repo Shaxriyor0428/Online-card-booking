@@ -5,7 +5,7 @@ on:
       - main
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Upload code
         uses: actions/checkout@v4
@@ -30,12 +30,12 @@ jobs:
               mkdir -p $APP_DIR
               git clone https://github.com/Shaxriyor0428/Online-card-booking.git $APP_DIR
               cd $APP_DIR
-               echo 'PORT=${PORT}
-               PG_DB=${{ secrets.PG_DB }}
-               PG_HOST=${{ secrets.PG_HOST }}
-               PG_PASS=${{ secrets.PG_PASS }}
-               PG_PORT=${{ secrets.PG_PORT }}
-               PG_USER=${{ secrets.PG_USER }}' > .env
+              echo 'PORT=${PORT}
+              PG_DB=${PG_DB}
+              PG_HOST=${PG_HOST}
+              PG_PASS=${PG_PASS}
+              PG_PORT=${PG_PORT}
+              PG_USER=${PG_USER}' > .env
             else 
               cd $APP_DIR
               git pull origin main 
@@ -43,6 +43,11 @@ jobs:
             npm install
             npm run build
             pm2 restart online_card || pm2 start dist/main.js --name online_card
-          "
+           "
+      env:
+          PG_DB: ${{ secrets.PG_DB }}
+          PG_HOST: ${{ secrets.PG_HOST }}
+          PG_PASS: ${{ secrets.PG_PASS }}
+          PG_PORT: ${{ secrets.PG_PORT }}
+          PG_USER: ${{ secrets.PG_USER }}
         shell: bash
-
