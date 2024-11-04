@@ -14,6 +14,7 @@ import { UpdateClientDto } from './dto/update-client.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Clients } from './entities/client.entity';
 import { ClientAccessTokenGuard } from '../common/guards/client.access_token.guard';
+import { AuthGuard } from '../common/guards/auth.guard';
 
 @ApiTags('Clients')
 @Controller('clients')
@@ -29,7 +30,7 @@ export class ClientsController {
   //   return await this.clientsService.create(createClientDto);
   // }
 
-  @UseGuards(ClientAccessTokenGuard)
+  @UseGuards(AuthGuard)
   @Get()
   @ApiOperation({ summary: 'Get all Clients' })
   @ApiResponse({
@@ -41,7 +42,7 @@ export class ClientsController {
     return this.clientsService.findAll();
   }
 
-  @UseGuards(ClientAccessTokenGuard)
+  @UseGuards(AuthGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Get client by ID' })
   @ApiResponse({
