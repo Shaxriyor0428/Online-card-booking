@@ -13,14 +13,16 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Role } from './entities/role.entity';
-import { AccessTokenGuard } from '../common/guards/access_token.guard';
+import { AdminAccessTokenGuard } from '../common/guards/access_token.guard';
+import { IsCreatorGuard } from '../common/guards/is_creator.guard';
 
-@UseGuards(AccessTokenGuard)
+@UseGuards(AdminAccessTokenGuard)
 @ApiTags('Roles')
 @Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
+  @UseGuards(IsCreatorGuard)
   @Post()
   @ApiOperation({ summary: 'Create a new Role' })
   @ApiResponse({
@@ -54,6 +56,7 @@ export class RolesController {
     return this.rolesService.findOne(+id);
   }
 
+  @UseGuards(IsCreatorGuard)
   @Patch(':id')
   @ApiOperation({ summary: 'Update role by Id' })
   @ApiResponse({
@@ -65,6 +68,7 @@ export class RolesController {
     return this.rolesService.update(+id, updateRoleDto);
   }
 
+  @UseGuards(IsCreatorGuard)
   @Delete(':id')
   @ApiOperation({ summary: 'Delete role by Id' })
   @ApiResponse({

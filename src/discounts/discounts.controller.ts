@@ -15,9 +15,9 @@ import { CreateDiscountDto } from './dto/create-discount.dto';
 import { UpdateDiscountDto } from './dto/update-discount.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Discount } from './entities/discount.entity';
-import { AccessTokenGuard } from '../common/guards/access_token.guard';
+import { AdminAccessTokenGuard } from '../common/guards/access_token.guard';
 
-@UseGuards(AccessTokenGuard)
+@UseGuards(AdminAccessTokenGuard)
 @ApiTags('Discounts')
 @Controller('discounts')
 export class DiscountsController {

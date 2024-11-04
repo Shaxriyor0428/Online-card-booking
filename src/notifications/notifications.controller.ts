@@ -8,18 +8,21 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Notification } from './entities/notification.entity';
+import { AdminAccessTokenGuard } from '../common/guards/access_token.guard';
 
 @ApiTags('Notifications')
 @Controller('notifications')
 export class NotificationsController {
   constructor(private readonly notificationsService: NotificationsService) {}
 
+  @UseGuards(AdminAccessTokenGuard)
   @Post()
   @ApiOperation({ summary: 'Create notification' })
   @ApiResponse({
@@ -53,6 +56,7 @@ export class NotificationsController {
     return this.notificationsService.findOne(+id);
   }
 
+  @UseGuards(AdminAccessTokenGuard)
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Update notification by ID' })
@@ -68,6 +72,7 @@ export class NotificationsController {
     return this.notificationsService.update(+id, updateNotificationDto);
   }
 
+  @UseGuards(AdminAccessTokenGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Delete notification by ID' })

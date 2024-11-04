@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class AdminAccessTokenGuard implements CanActivate {
+export class AdminSelfGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private jwtService: JwtService,
@@ -42,6 +42,14 @@ export class AdminAccessTokenGuard implements CanActivate {
         secret: process.env.ADMIN_ACCESS_TOKEN_KEY,
       });
 
+      const id = request.params.id;
+      if (id) {
+        if (id != payload.id) {
+          throw new UnauthorizedException(
+            'You do not have permission to access this resource.',
+          );
+        }
+      }
       payload['accessToken'] = token;
       request.user = payload;
       return true;

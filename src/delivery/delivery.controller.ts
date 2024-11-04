@@ -8,13 +8,16 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { DeliveryService } from './delivery.service';
 import { CreateDeliveryDto } from './dto/create-delivery.dto';
 import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Delivery } from './entities/delivery.entity';
+import { AuthGuard } from '../common/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @ApiTags('Delivery')
 @Controller('delivery')
 export class DeliveryController {

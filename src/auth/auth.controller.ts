@@ -13,15 +13,14 @@ import { CreateAdminDto } from '../admin/dto/create-admin.dto';
 import { AdminSignInDto } from './dto/create-auth.dto';
 import { RefreshTokenGuard } from '../common/guards/refresh_token.guard';
 import { GetCurrentUser } from '../common/decorators/get-current-userid';
-import { AccessTokenGuard } from '../common/guards/access_token.guard';
+import { AdminAccessTokenGuard } from '../common/guards/access_token.guard';
 import { Public } from '../common/decorators/is-public.decorator';
 import { IsCreatorGuard } from '../common/guards/is_creator.guard';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Admin } from '../admin/entities/admin.entity';
 
-
 @ApiTags('Auth')
-@UseGuards(AccessTokenGuard)
+@UseGuards(AdminAccessTokenGuard)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

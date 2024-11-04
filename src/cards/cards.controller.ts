@@ -6,13 +6,17 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Card } from './entities/card.entity';
-
+import { AdminAccessTokenGuard } from '../common/guards/access_token.guard';
+import { Public } from '../common/decorators/is-public.decorator';
+import { AuthGuard } from '../common/guards/auth.guard';
+@UseGuards(AdminAccessTokenGuard)
 @Controller('cards')
 export class CardsController {
   constructor(private readonly cardsService: CardsService) {}
@@ -28,6 +32,8 @@ export class CardsController {
     return this.cardsService.create(createCardDto);
   }
 
+  @Public()
+  @UseGuards(AuthGuard)
   @Get()
   @ApiOperation({ summary: 'Retrieve all Cards' })
   @ApiResponse({
@@ -39,6 +45,8 @@ export class CardsController {
     return this.cardsService.findAll();
   }
 
+  @Public()
+  @UseGuards(AuthGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Get card by ID' })
   @ApiResponse({

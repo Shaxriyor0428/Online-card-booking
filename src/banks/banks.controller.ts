@@ -6,13 +6,17 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { BanksService } from './banks.service';
 import { CreateBankDto } from './dto/create-bank.dto';
 import { UpdateBankDto } from './dto/update-bank.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Banks } from './entities/bank.entity';
-
+import { IsCreatorGuard } from '../common/guards/is_creator.guard';
+import { Public } from '../common/decorators/is-public.decorator';
+import { AuthGuard } from '../common/guards/auth.guard';
+@UseGuards(IsCreatorGuard)
 @ApiTags('Banks')
 @Controller('banks')
 export class BanksController {
@@ -29,6 +33,8 @@ export class BanksController {
     return this.banksService.create(createBankDto);
   }
 
+  @Public()
+  @UseGuards(AuthGuard)
   @Get()
   @ApiOperation({ summary: 'Get list of Banks' })
   @ApiResponse({
@@ -39,7 +45,8 @@ export class BanksController {
   findAll() {
     return this.banksService.findAll();
   }
-
+  @Public()
+  @UseGuards(AuthGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Get bank by ID' })
   @ApiResponse({

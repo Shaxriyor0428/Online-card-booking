@@ -15,9 +15,11 @@ import { CreateCardTypeDto } from './dto/create-card_type.dto';
 import { UpdateCardTypeDto } from './dto/update-card_type.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CardType } from './entities/card_type.entity';
-import { AccessTokenGuard } from '../common/guards/access_token.guard';
+import { AdminAccessTokenGuard } from '../common/guards/access_token.guard';
+import { Public } from '../common/decorators/is-public.decorator';
+import { AuthGuard } from '../common/guards/auth.guard';
 
-@UseGuards(AccessTokenGuard)
+@UseGuards(AdminAccessTokenGuard)
 @ApiTags('Card Types')
 @Controller('card-types')
 export class CardTypesController {
@@ -34,6 +36,8 @@ export class CardTypesController {
     return this.cardTypesService.create(createCardTypeDto);
   }
 
+  @Public()
+  @UseGuards(AuthGuard)
   @Get()
   @ApiOperation({ summary: 'Retrieve all card types' })
   @ApiResponse({
@@ -45,6 +49,8 @@ export class CardTypesController {
     return this.cardTypesService.findAll();
   }
 
+  @Public()
+  @UseGuards(AuthGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Retrieve a card type by ID' })
   @ApiResponse({

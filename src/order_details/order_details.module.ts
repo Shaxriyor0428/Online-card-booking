@@ -7,6 +7,7 @@ import { ClientsModule } from '../clients/clients.module';
 import { OrdersModule } from '../orders/orders.module';
 import { DiscountsModule } from '../discounts/discounts.module';
 import { CardsModule } from '../cards/cards.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { CardsModule } from '../cards/cards.module';
     OrdersModule,
     DiscountsModule,
     CardsModule,
+    JwtModule,
   ],
   controllers: [OrderDetailsController],
   providers: [OrderDetailsService],

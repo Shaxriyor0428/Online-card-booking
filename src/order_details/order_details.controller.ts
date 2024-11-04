@@ -8,18 +8,22 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { OrderDetailsService } from './order_details.service';
 import { CreateOrderDetailDto } from './dto/create-order_detail.dto';
 import { UpdateOrderDetailDto } from './dto/update-order_detail.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OrderDetail } from './entities/order_detail.entity';
-
+import { AuthGuard } from '../common/guards/auth.guard';
+import { AdminAccessTokenGuard } from '../common/guards/access_token.guard';
+@UseGuards(AuthGuard)
 @ApiTags('Order details')
 @Controller('order-details')
 export class OrderDetailsController {
   constructor(private readonly orderDetailsService: OrderDetailsService) {}
 
+  @UseGuards(AdminAccessTokenGuard)
   @Post()
   @ApiOperation({ summary: 'Create a new order detail' })
   @ApiResponse({
@@ -53,6 +57,7 @@ export class OrderDetailsController {
     return this.orderDetailsService.findOne(+id);
   }
 
+  @UseGuards(AdminAccessTokenGuard)
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Update an order detail by ID' })
@@ -68,6 +73,7 @@ export class OrderDetailsController {
     return this.orderDetailsService.update(+id, updateOrderDetailDto);
   }
 
+  @UseGuards(AdminAccessTokenGuard)
   @Delete(':id')
   @ApiOperation({ summary: 'Delete an order detail by ID' })
   @ApiResponse({

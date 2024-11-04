@@ -7,11 +7,13 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Admin } from './entities/admin.entity';
+import { AdminSelfGuard } from '../common/guards/admin.self.guard';
 
 @ApiTags('Admin')
 @Controller('admin')
@@ -40,6 +42,7 @@ export class AdminController {
     return this.adminService.findOne(+id);
   }
 
+  @UseGuards(AdminSelfGuard)
   @Patch(':id')
   @ApiOperation({ summary: 'Update admin by ID' })
   @HttpCode(HttpStatus.OK)
@@ -52,6 +55,7 @@ export class AdminController {
     return this.adminService.update(+id, updateAdminDto);
   }
 
+  @UseGuards(AdminSelfGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Delete admin by ID' })

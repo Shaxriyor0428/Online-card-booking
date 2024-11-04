@@ -8,12 +8,14 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Order } from './entities/order.entity';
+import { AdminAccessTokenGuard } from '../common/guards/access_token.guard';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -53,6 +55,7 @@ export class OrdersController {
     return this.ordersService.findOne(+id);
   }
 
+  @UseGuards(AdminAccessTokenGuard)
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Update order by ID' })
@@ -65,6 +68,7 @@ export class OrdersController {
     return this.ordersService.update(+id, updateOrderDto);
   }
 
+  @UseGuards(AdminAccessTokenGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Delete order by ID' })

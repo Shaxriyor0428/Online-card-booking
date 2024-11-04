@@ -8,13 +8,15 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Transaction } from './entities/transaction.entity';
-
+import { AdminAccessTokenGuard } from '../common/guards/access_token.guard';
+@UseGuards(AdminAccessTokenGuard)
 @ApiTags('Transactions')
 @Controller('transactions')
 export class TransactionsController {

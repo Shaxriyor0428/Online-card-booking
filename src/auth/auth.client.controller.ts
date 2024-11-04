@@ -8,6 +8,7 @@ import { CookieGetter } from '../common/decorators/cookie.decorator';
 import { ClientRefreshTokenGuard } from '../common/guards/client.refresh_token.guard';
 import { GetCurrentClientId } from '../common/decorators/client-get_id.decorator';
 import { ConfirmPassportDataDto } from './dto/confirm-password.data.dto';
+import { ClientAccessTokenGuard } from '../common/guards/client.access_token.guard';
 
 @Controller('auth-client')
 export class AuthClientController {
@@ -50,11 +51,13 @@ export class AuthClientController {
     return this.authClientService.clientSignOut(id, res);
   }
 
+  @UseGuards(ClientAccessTokenGuard)
   @Post('verifyotp')
   async verifyOtp(@Body() verificationOtpDto: VerifyOtpDto) {
     return this.authClientService.verifyOtp(verificationOtpDto);
   }
 
+  @UseGuards(ClientAccessTokenGuard)
   @Post('confirm-passport')
   async confirmPassportData(
     @Body() confirmPassportDataDto: ConfirmPassportDataDto,
