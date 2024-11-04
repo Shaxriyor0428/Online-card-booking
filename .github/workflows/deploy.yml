@@ -16,7 +16,6 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
         shell: bash
-
       - name: Deploy to server
         env:
           HOST: ${{ secrets.HOST }}
@@ -45,8 +44,3 @@ jobs:
             pm2 restart online_card || pm2 start dist/main.js --name online_card
           "
         shell: bash
-
-        
-
-
-        
