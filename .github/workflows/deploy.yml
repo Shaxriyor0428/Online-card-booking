@@ -12,10 +12,10 @@ jobs:
 
       - name: Configure SSH key
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-        shell: bash
+          New-Item -ItemType Directory -Force -Path $HOME\.ssh
+          Set-Content -Path $HOME\.ssh\id_rsa -Value "${{ secrets.SSH_PRIVATE_KEY }}"
+          icacls $HOME\.ssh\id_rsa /inheritance:r /grant:r "$($env:USERNAME):(R)"
+        shell: powershell
 
       - name: Deploy to server
         env:
@@ -46,4 +46,3 @@ jobs:
           "
         shell: bash
 
-        
