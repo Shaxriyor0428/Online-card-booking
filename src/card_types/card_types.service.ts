@@ -15,11 +15,11 @@ export class CardTypesService {
   }
 
   findAll() {
-    return this.cardTypeRepo.find();
+    return this.cardTypeRepo.find({ relations: ['cards'] });
   }
 
   findOne(id: number) {
-    return this.cardTypeRepo.findOneBy({ id });
+    return this.cardTypeRepo.findOne({ where: { id }, relations: ['cards'] });
   }
 
   update(id: number, updateCardTypeDto: UpdateCardTypeDto) {

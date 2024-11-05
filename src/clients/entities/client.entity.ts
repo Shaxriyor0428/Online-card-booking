@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { OrderDetail } from '../../order_details/entities/order_detail.entity';
 
 @Entity()
 export class Clients {
@@ -49,4 +50,7 @@ export class Clients {
 
   @Column({ type: 'boolean', default: false, nullable: true })
   verified: boolean;
+
+  @OneToMany(() => OrderDetail, (order_details) => order_details.client)
+  order_details: OrderDetail[];
 }

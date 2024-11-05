@@ -22,7 +22,9 @@ export class TransactionsService {
   }
 
   findAll() {
-    return this.transactionRepo.find();
+    return this.transactionRepo.find({
+      relations:['order']
+    });
   }
 
   findOne(id: number) {

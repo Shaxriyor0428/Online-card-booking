@@ -1,5 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { OrderDetailsStatusEnum } from '../../common/types';
+import { Order } from '../../orders/entities/order.entity';
+import { Clients } from '../../clients/entities/client.entity';
+import { Card } from '../../cards/entities/card.entity';
 
 @Entity()
 export class OrderDetail {
@@ -8,15 +17,6 @@ export class OrderDetail {
 
   @Column({ nullable: true })
   discountId: number;
-
-  @Column()
-  orderId: number;
-
-  @Column()
-  cardId: number;
-
-  @Column()
-  clientId: number;
 
   @Column()
   quantity: number;
@@ -33,4 +33,16 @@ export class OrderDetail {
     default: OrderDetailsStatusEnum.PENDING,
   })
   status: string;
+
+  @ManyToOne(() => Order, (order) => order.order_details)
+  @JoinColumn({ name: 'orderId' })
+  order: Order;
+
+  @ManyToOne(() => Clients, (client) => client.order_details)
+  @JoinColumn({ name: 'clientId' })
+  client: Clients;
+
+  @ManyToOne(() => Card, (card) => card.order_details)
+  @JoinColumn({ name: 'cardId' })
+  card: Card;
 }

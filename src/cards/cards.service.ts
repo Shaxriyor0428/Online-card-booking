@@ -44,12 +44,15 @@ export class CardsService {
 
   findAll() {
     return this.cardRepo.find({
-      relations: ['banks'],
+      relations: ['banks', 'card_type'],
     });
   }
 
   findOne(id: number) {
-    return this.cardRepo.findOneBy({ id });
+    return this.cardRepo.findOne({
+      where: { id },
+      relations: ['banks', 'card_type'],
+    });
   }
 
   update(id: number, updateCardDto: UpdateCardDto) {

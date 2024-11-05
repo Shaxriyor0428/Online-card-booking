@@ -23,6 +23,8 @@ import { AddMinutesToDate } from '../helpers/add-minute';
 import { decode, encode } from '../helpers/crypto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
 import { ConfirmPassportDataDto } from './dto/confirm-password.data.dto';
+import * as NodeCashe from 'node-cache';
+const my_cashe = new NodeCashe()
 
 @Injectable()
 export class AuthClientService {
@@ -116,20 +118,26 @@ export class AuthClientService {
         'Error sending activation otp code',
       );
     }
+    my_cashe.set(otp, encodedData, 3000);
 
     return {
       id: client.id,
       access_token: tokens.access_token,
-      details: encodedData,
       sms: 'Otp code sent your email',
     };
   }
 
   async verifyOtp(verifyOtpDto: VerifyOtpDto) {
-    const { verification_key, otp, email } = verifyOtpDto;
+    const { otp, email } = verifyOtpDto;
     const currentTime = new Date();
 
-    const decodedData = await decode(verification_key);
+    const data: any = await my_cashe.get(otp);
+    console.log(data);
+    
+    if (!data) {
+      throw new BadRequestException('Code incorrect or time expired');
+    }
+    const decodedData = await decode(data);
     const details = JSON.parse(decodedData);
 
     if (details.email !== email) {

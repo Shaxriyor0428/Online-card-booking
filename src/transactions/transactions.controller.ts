@@ -16,6 +16,8 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Transaction } from './entities/transaction.entity';
 import { AdminAccessTokenGuard } from '../common/guards/access_token.guard';
+import { Public } from '../common/decorators/is-public.decorator';
+import { AuthGuard } from '../common/guards/auth.guard';
 @UseGuards(AdminAccessTokenGuard)
 @ApiTags('Transactions')
 @Controller('transactions')
@@ -33,6 +35,8 @@ export class TransactionsController {
     return this.transactionsService.create(createTransactionDto);
   }
 
+  @Public()
+  @UseGuards(AuthGuard)
   @Get()
   @ApiOperation({ summary: 'Get list of Transactions' })
   @ApiResponse({
@@ -44,6 +48,8 @@ export class TransactionsController {
     return this.transactionsService.findAll();
   }
 
+  @Public()
+  @UseGuards(AuthGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Get Transaction by ID' })
   @ApiResponse({

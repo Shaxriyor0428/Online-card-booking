@@ -1,5 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { TransactionStatus } from '../../common/types';
+import { Order } from '../../orders/entities/order.entity';
 
 @Entity()
 export class Transaction {
@@ -20,4 +27,8 @@ export class Transaction {
 
   @Column({ nullable: true })
   orderId: number;
+
+  @OneToOne(() => Order, (order) => order.transaction)
+  @JoinColumn({ name: 'orderId' })
+  order: Order;
 }

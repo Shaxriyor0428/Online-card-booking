@@ -28,12 +28,12 @@ export class ClientAccessTokenGuard implements CanActivate {
       );
     }
 
+    
     let decoded: any;
     try {
-      decoded = this.jwtService.verify(token, {
-        secret: process.env.ADMIN_ACCESS_TOKEN_KEY,
-      });
+      decoded = this.jwtService.decode(token);
       request['user'] = decoded;
+
     } catch (error) {
       console.error(error);
 
@@ -42,6 +42,7 @@ export class ClientAccessTokenGuard implements CanActivate {
           secret: process.env.ACCESS_TOKEN_KEY,
         });
         request['user'] = decoded;
+        console.log(decoded);
       } catch (error) {
         console.error(error);
         throw new UnauthorizedException('Invalid or expired token.');
@@ -58,10 +59,8 @@ export class ClientAccessTokenGuard implements CanActivate {
       );
     }
 
+    
     const id = request.params?.id;
-    const isGetRequest = request.method === 'GET';
-    const isAdmin = decoded.role === 'admin';
-
     if (id) {
       if (
         decoded.role === 'admin' ||
@@ -69,22 +68,7 @@ export class ClientAccessTokenGuard implements CanActivate {
       ) {
         return true;
       }
-      {
-        throw new UnauthorizedException(
-          'Admin users are not allowed to modify or delete client data.',
-        );
-      }
     }
-    if (isGetRequest || (decoded && !isAdmin)) {
-      return true;
-    }
-
-    if (id && isAdmin) {
-      throw new UnauthorizedException(
-        'Admins are not allowed to modify client data.',
-      );
-    }
-
     if (id && decoded.id != id) {
       throw new UnauthorizedException(
         'You do not have permission to access this resource.',

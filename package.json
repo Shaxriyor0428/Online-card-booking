@@ -33,6 +33,7 @@
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.7",
     "nest-winston": "^1.9.7",
+    "node-cache": "^5.1.2",
     "otp-generator": "^4.0.1",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.0",

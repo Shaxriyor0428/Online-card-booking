@@ -19,7 +19,7 @@ export class BanksService {
   }
 
   findOne(id: number) {
-    return this.bankRepo.findOneBy({ id });
+    return this.bankRepo.findOne({ where: { id }, relations: ['cards'] });
   }
 
   async update(id: number, updateBankDto: UpdateBankDto) {

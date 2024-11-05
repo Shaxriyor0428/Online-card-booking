@@ -49,11 +49,16 @@ export class OrderDetailsService {
   }
 
   findAll() {
-    return this.orderDetailsRepo.find();
+    return this.orderDetailsRepo.find({
+      relations: ['client', 'order', 'card'],
+    });
   }
 
   findOne(id: number) {
-    return this.orderDetailsRepo.findOne({ where: { id } });
+    return this.orderDetailsRepo.findOne({
+      where: { id },
+      relations: ['client', 'order', 'card'],
+    });
   }
 
   update(id: number, updateOrderDetailDto: UpdateOrderDetailDto) {
