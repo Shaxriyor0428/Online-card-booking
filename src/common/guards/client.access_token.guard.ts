@@ -28,12 +28,10 @@ export class ClientAccessTokenGuard implements CanActivate {
       );
     }
 
-    
     let decoded: any;
     try {
       decoded = this.jwtService.decode(token);
       request['user'] = decoded;
-
     } catch (error) {
       console.error(error);
 
@@ -59,7 +57,6 @@ export class ClientAccessTokenGuard implements CanActivate {
       );
     }
 
-    
     const id = request.params?.id;
     if (id) {
       if (

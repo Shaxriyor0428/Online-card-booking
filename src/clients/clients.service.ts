@@ -45,7 +45,7 @@ export class ClientsService {
 
   async findAll() {
     return this.clientRepo.find({
-      relations:['order_details']
+      relations: ['order_details'],
     });
   }
 

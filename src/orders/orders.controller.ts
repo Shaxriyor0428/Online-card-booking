@@ -16,6 +16,7 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Order } from './entities/order.entity';
 import { AdminAccessTokenGuard } from '../common/guards/access_token.guard';
+import { ClientAccessTokenGuard } from '../common/guards/client.access_token.guard';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -33,6 +34,7 @@ export class OrdersController {
     return this.ordersService.create(createOrderDto);
   }
 
+  @UseGuards(ClientAccessTokenGuard)
   @Get()
   @ApiOperation({ summary: 'Get all Orders' })
   @ApiResponse({
@@ -44,6 +46,7 @@ export class OrdersController {
     return this.ordersService.findAll();
   }
 
+  @UseGuards(ClientAccessTokenGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Get order by ID' })
   @ApiResponse({

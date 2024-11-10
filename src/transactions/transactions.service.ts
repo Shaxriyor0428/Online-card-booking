@@ -23,7 +23,7 @@ export class TransactionsService {
 
   findAll() {
     return this.transactionRepo.find({
-      relations:['order']
+      relations: ['order'],
     });
   }
 

@@ -74,10 +74,10 @@ export class AuthController {
   }
 
   @Public()
+  @UseGuards(RefreshTokenGuard)
   @ApiOperation({ summary: 'Admin logout' })
   @ApiResponse({ status: 200, description: 'Admin logged out successfully' })
   @Post('signout')
-  @UseGuards(RefreshTokenGuard)
   async adminSignOut(
     @GetCurrentUser('id') id: number,
     @Res({ passthrough: true }) res: Response,

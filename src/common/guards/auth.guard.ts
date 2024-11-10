@@ -24,6 +24,7 @@ export class AuthGuard implements CanActivate {
       this.jwtService.decode(token);
       return true;
     } catch (error) {
+      console.log(error);
       throw new UnauthorizedException('Invalid token');
     }
   }
